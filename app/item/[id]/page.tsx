@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import { ArrowLeftIcon, ArchiveIcon, RotateCcwIcon } from 'lucide-react';
 import Link from 'next/link';
 import ClothingItemImage from '@/components/ClothingItemImage';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function ItemPage() {
   const params = useParams();
@@ -137,18 +138,19 @@ export default function ItemPage() {
   const daysUntil = getDaysUntilCleaning(item.nextCleaningDate);
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6">
-      <div className="mb-4 sm:mb-6">
-        <Link
-          href="/"
-          className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-3 sm:mb-4"
-        >
-          <ArrowLeftIcon className="h-4 w-4 mr-2" />
-          Back to All Items
-        </Link>
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{item.name}</h1>
-        <p className="text-gray-600 mt-2">Clothing Item Details</p>
-      </div>
+    <ProtectedRoute>
+      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+        <div className="mb-4 sm:mb-6">
+          <Link
+            href="/"
+            className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-3 sm:mb-4"
+          >
+            <ArrowLeftIcon className="h-4 w-4 mr-2" />
+            Back to All Items
+          </Link>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{item.name}</h1>
+          <p className="text-gray-600 mt-2">Clothing Item Details</p>
+        </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Item Image */}
@@ -316,6 +318,7 @@ export default function ItemPage() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 } 

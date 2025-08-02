@@ -8,6 +8,7 @@ import { format } from 'date-fns';
 import { ArrowLeftIcon } from 'lucide-react';
 import Link from 'next/link';
 import ClothingItemImage from '@/components/ClothingItemImage';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function TypePage() {
   const params = useParams();
@@ -94,20 +95,21 @@ export default function TypePage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6">
-      <div className="mb-4 sm:mb-6">
-        <Link
-          href="/"
-          className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-3 sm:mb-4"
-        >
-          <ArrowLeftIcon className="h-4 w-4 mr-2" />
-          Back to All Items
-        </Link>
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{itemType}</h1>
-        <p className="text-gray-600 mt-2">
-          {items.length} item{items.length !== 1 ? 's' : ''} of this type
-        </p>
-      </div>
+    <ProtectedRoute>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="mb-4 sm:mb-6">
+          <Link
+            href="/"
+            className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-3 sm:mb-4"
+          >
+            <ArrowLeftIcon className="h-4 w-4 mr-2" />
+            Back to All Items
+          </Link>
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{itemType}</h1>
+          <p className="text-gray-600 mt-2">
+            {items.length} item{items.length !== 1 ? 's' : ''} of this type
+          </p>
+        </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Update Type Cleaning Interval */}
@@ -221,6 +223,7 @@ export default function TypePage() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 } 

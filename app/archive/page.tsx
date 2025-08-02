@@ -7,6 +7,7 @@ import { ClothingItemsByType, ClothingItem } from '@/types';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import ClothingItemImage from '@/components/ClothingItemImage';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function ArchivePage() {
   const [itemsByType, setItemsByType] = useState<ClothingItemsByType>({});
@@ -96,19 +97,20 @@ export default function ArchivePage() {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6 px-4 sm:px-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
-        <div className="flex items-center space-x-3">
-          <ArchiveIcon className="h-6 w-6 text-gray-600" />
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Archived Items</h1>
+    <ProtectedRoute>
+      <div className="space-y-4 sm:space-y-6 px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+          <div className="flex items-center space-x-3">
+            <ArchiveIcon className="h-6 w-6 text-gray-600" />
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Archived Items</h1>
+          </div>
+          <Link
+            href="/"
+            className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base"
+          >
+            Back to Active Items
+          </Link>
         </div>
-        <Link
-          href="/"
-          className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base"
-        >
-          Back to Active Items
-        </Link>
-      </div>
 
       {Object.keys(itemsByType).length === 0 ? (
         <div className="text-center py-8 sm:py-12">
@@ -198,6 +200,7 @@ export default function ArchivePage() {
           ))}
         </div>
       )}
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 } 

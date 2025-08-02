@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { clothingApi } from '@/lib/api';
 import { ClothingItemCreate } from '@/types';
 import ImageUpload from '@/components/ImageUpload';
+import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function AddItemPage() {
   const router = useRouter();
@@ -69,11 +70,12 @@ export default function AddItemPage() {
   ];
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6">
-      <div className="mb-4 sm:mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Add New Clothing Item</h1>
-        <p className="text-gray-600 mt-2">Add a new item to your clothing collection</p>
-      </div>
+    <ProtectedRoute>
+      <div className="max-w-2xl mx-auto px-4 sm:px-6">
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Add New Clothing Item</h1>
+          <p className="text-gray-600 mt-2">Add a new item to your clothing collection</p>
+        </div>
 
       <div className="bg-white rounded-lg shadow-sm border p-4 sm:p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -192,6 +194,7 @@ export default function AddItemPage() {
           </div>
         </form>
       </div>
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 } 

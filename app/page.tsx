@@ -1,18 +1,21 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ChevronDownIcon, ChevronRightIcon } from 'lucide-react';
+import { ChevronDownIcon, ChevronRightIcon, LogOut, User } from 'lucide-react';
 import { clothingApi } from '@/lib/api';
 import { ClothingItemsByType, ClothingItem } from '@/types';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import ClothingItemImage from '@/components/ClothingItemImage';
+import ProtectedRoute from '@/components/ProtectedRoute';
+import { useAuth } from '@/lib/auth';
 
 export default function HomePage() {
   const [itemsByType, setItemsByType] = useState<ClothingItemsByType>({});
   const [expandedTypes, setExpandedTypes] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     loadItems();
@@ -78,24 +81,40 @@ export default function HomePage() {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6 px-4 sm:px-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Clothing Items</h1>
-        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
-          <Link
-            href="/archive"
-            className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base"
-          >
-            View Archived
-          </Link>
-          <Link
-            href="/add"
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
-          >
-            Add New Item
-          </Link>
+    <ProtectedRoute>
+      <div className="space-y-4 sm:space-y-6 px-4 sm:px-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-4 sm:space-y-0">
+          <div className="flex items-center space-x-4">
+            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Clothing Items</h1>
+            {user && (
+              <div className="flex items-center space-x-2 text-sm text-gray-600">
+                <User className="h-4 w-4" />
+                <span>{user.name}</span>
+              </div>
+            )}
+          </div>
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
+            <button
+              onClick={logout}
+              className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors text-sm sm:text-base flex items-center space-x-2"
+            >
+              <LogOut className="h-4 w-4" />
+              <span>Logout</span>
+            </button>
+            <Link
+              href="/archive"
+              className="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base"
+            >
+              View Archived
+            </Link>
+            <Link
+              href="/add"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
+            >
+              Add New Item
+            </Link>
+          </div>
         </div>
-      </div>
 
       {Object.keys(itemsByType).length === 0 ? (
         <div className="text-center py-8 sm:py-12">
@@ -201,6 +220,7 @@ export default function HomePage() {
           ))}
         </div>
       )}
-    </div>
+      </div>
+    </ProtectedRoute>
   );
 } 
